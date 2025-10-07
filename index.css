@@ -145,7 +145,7 @@ main {
 }
 
 /* --- Modal --- */
-#task-modal, #reward-modal {
+#task-modal, #reward-modal, #video-modal {
     position: fixed;
     z-index: 2000;
     left: 0;
@@ -164,7 +164,8 @@ main {
 }
 
 #task-modal:not(.modal-hidden),
-#reward-modal:not(.modal-hidden) {
+#reward-modal:not(.modal-hidden),
+#video-modal:not(.modal-hidden) {
     opacity: 1;
     visibility: visible;
 }
@@ -184,8 +185,13 @@ main {
     text-align: center;
 }
 
+#video-modal .modal-content {
+    max-width: 800px;
+}
+
 #task-modal:not(.modal-hidden) .modal-content,
-#reward-modal:not(.modal-hidden) .modal-content {
+#reward-modal:not(.modal-hidden) .modal-content,
+#video-modal:not(.modal-hidden) .modal-content {
     transform: translateY(0) scale(1);
 }
 
@@ -204,12 +210,16 @@ main {
     color: var(--text-color);
 }
 
-#task-title, #reward-title {
+#task-title, #reward-title, #video-title {
     font-family: var(--font-heading);
     font-size: 1.8rem;
     margin-bottom: 0.75rem;
     color: var(--slate-gray);
     text-align: center;
+}
+
+#video-title {
+    margin-bottom: 1.5rem;
 }
 
 #task-question, #reward-text {
@@ -266,7 +276,7 @@ main {
     opacity: 0.7;
 }
 
-#continue-button, #reward-continue-button {
+#continue-button, #reward-continue-button, #video-continue-button {
     width: 100%;
     padding: 1rem;
     color: white;
@@ -275,11 +285,11 @@ main {
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: all 0.3s ease;
     background-color: var(--accent-color);
     margin-top: 1rem;
 }
-#continue-button:hover, #reward-continue-button:hover {
+#continue-button:hover, #reward-continue-button:hover, #video-continue-button:hover {
     background-color: var(--accent-hover);
     transform: translateY(-2px);
 }
@@ -346,36 +356,14 @@ main {
     background-color: var(--locked-color);
 }
 
-/* --- Video Overlay --- */
-#video-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
-    z-index: 4000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-#video-player-container {
-    width: 95%;
-    max-width: 1280px;
-    max-height: 95vh;
-    position: relative;
-}
-
+/* --- Video Modal --- */
 #final-video {
     width: 100%;
     height: auto;
-    max-height: 95vh;
+    max-height: 70vh;
     border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background-color: #000;
 }
-
 
 @keyframes pulse {
     0% {
