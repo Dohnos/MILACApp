@@ -91,7 +91,7 @@ const rewardContinueButton = document.getElementById('reward-continue-button');
 
 // Elementy pro video
 const videoModal = document.getElementById('video-modal');
-const finalVideo = document.getElementById('final-video');
+const finalVideoLink = document.getElementById('final-video-link');
 const videoContinueButton = document.getElementById('video-continue-button');
 
 /**
@@ -223,33 +223,17 @@ function closeRewardModal() {
 }
 
 /**
- * Spustí přehrávání finálního videa v modálním okně
+ * Otevře modální okno s odkazem na finální video
  */
-function openVideoModal(url) {
+function openVideoLinkModal(url) {
+    finalVideoLink.href = url;
     videoModal.classList.remove('modal-hidden');
-    videoContinueButton.classList.add('hidden');
-    finalVideo.src = url;
-    finalVideo.play().catch(e => console.error("Chyba při přehrávání videa:", e));
 
-    finalVideo.onended = () => {
-        videoContinueButton.classList.remove('hidden');
-    };
-    
     videoContinueButton.onclick = () => {
-        closeVideoModal();
+        videoModal.classList.add('modal-hidden');
         showCompletionScreen();
     };
 }
-
-/**
- * Zavře modální okno s videem
- */
-function closeVideoModal() {
-    finalVideo.pause();
-    finalVideo.src = ""; // Uvolní zdroje
-    videoModal.classList.add('modal-hidden');
-}
-
 
 /**
  * Posune hru do dalšího stavu a uloží do DB
@@ -257,10 +241,10 @@ function closeVideoModal() {
 function advanceGameState(task) {
     const isFinalTask = task.id === TASKS.length - 1;
 
-    // Pokud je to poslední úkol a má video, přehraj ho
+    // Pokud je to poslední úkol a má video, zobraz modální okno s odkazem
     if (isFinalTask && task.videoUrl && task.videoUrl !== "SEM_VLOZ_URL_ADRESU_VIDEA") {
-        openVideoModal(task.videoUrl);
-        return; // Zastavíme další postup, čekáme na dokončení videa
+        openVideoLinkModal(task.videoUrl);
+        return;
     }
     
     const newIndex = gameState.currentTaskIndex + 1;
