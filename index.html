@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naše cesta za pokladem</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="welcome-screen">
+        <div class="welcome-content">
+            <h1>Pro moji životní lásku</h1>
+            <p>Čeká na tebe malé dobrodružství, které nás provede našimi nejkrásnějšími vzpomínkami. Jsi připravená?</p>
+            <button id="start-button">Spustit dobrodružství</button>
+        </div>
+    </div>
+
+    <div id="app-container" class="hidden">
+        <header>
+            <h1>Naše cesta za pokladem</h1>
+            <p id="progress-indicator">Načítám dobrodružství...</p>
+        </header>
+        <main>
+            <div id="map"></div>
+        </main>
+    </div>
+
+    <div id="task-modal" class="modal-hidden">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="task-title"></h2>
+            <p id="task-question"></p>
+            <form id="task-form">
+                <input type="text" id="task-answer" placeholder="Tvá odpověď..." autocomplete="off" required>
+                <button type="submit" id="submit-button">Odeslat odpověď</button>
+            </form>
+            <div id="feedback-message" class="hidden"></div>
+            <button id="continue-button" class="hidden">Pokračovat</button>
+        </div>
+    </div>
+
+    <div id="completion-screen" class="hidden">
+        <div class="completion-content">
+            <h2>Našla jsi poslední poklad.</h2>
+            <p>Ta nejdůležitější indicie už není na obrazovce.</p>
+            <p class="final-word">Otoč se...</p>
+        </div>
+    </div>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js" defer></script>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin="" defer></script>
+            
+    <script src="index.js" defer></script>
+</body>
+</html>
