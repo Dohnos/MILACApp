@@ -1,50 +1,69 @@
-// --- DŮLEŽITÉ: Vložte sem konfiguraci vašeho Firebase projektu ---
-// Najdete ji v nastavení vašeho projektu ve Firebase Console
-// (Project Settings > General > Your apps > SDK setup and configuration)
+
+// @ts-nocheck
+const { firebase, L } = window;
+
+// --- Kompletní a finální Firebase konfigurace ---
 const firebaseConfig = {
   apiKey: "AIzaSyCr0mWTp9rYWTfnPEN5ZSWEcWf2kz0g6KU",
   authDomain: "milacapp-4e209.firebaseapp.com",
   databaseURL: "https://milacapp-4e209-default-rtdb.europe-west1.firebasedatabase.app/",
   projectId: "milacapp-4e209",
-  storageBucket: "milacapp-4e209.firebasestorage.app",
+  storageBucket: "milacapp-4e209.appspot.com",
   messagingSenderId: "965183350247",
   appId: "1:965183350247:web:0078481af23ac2ba780942"
 };
 // --- Konec konfigurace ---
 
-// Herní data
+// Herní data s výběrem možností a odměnami ve formě emojis
 const TASKS = [
     { 
         id: 0, 
         title: "Úkol 1: Olomouc",
         coords: [49.5942, 17.2510],
         question: "Pamatuješ si, jak se jmenovala kavárna, kde jsme si dali první kávu na jednom z našich prvních rande tady v Olomouci?",
-        answer: "cafe la fee",
-        clue: "Správně, lásko! Další cíl je místo, kde jsme si užili náš první společný wellness. Leží kousek za hranicemi." 
+        options: ["Kafe a Láska", "Cafe La Fée", "Long Story Short"],
+        answer: "Cafe La Fée",
+        clue: "Správně, lásko! Další cíl je místo, kde jsme si užili náš první společný wellness. Leží kousek za hranicemi.",
+        reward: {
+            icon: '💐',
+            text: "Jako malá pozornost za tvou skvělou paměť. Krásná květina pro krásnou ženu."
+        }
     },
     { 
         id: 1, 
         title: "Úkol 2: Laa an der Thaya",
         coords: [48.7183, 16.3916],
-        question: "V tichém bazénu jsme tehdy relaxovali celé hodiny. Jak se ten bazén jmenuje? (jedno slovo)",
-        answer: "silentium",
-        clue: "Přesně tak! Bylo to magické. Nyní se vydejme do srdce Pálavy, do města, kterému se přezdívá perla jižní Moravy." 
+        question: "V tichém bazénu jsme tehdy relaxovali celé hodiny. Jak se ten bazén jmenuje?",
+        options: ["Relaxarium", "Aquadrom", "Silentium"],
+        answer: "Silentium",
+        clue: "Přesně tak! Bylo to magické. Nyní se vydejme do srdce Pálavy, do města, kterému se přezdívá perla jižní Moravy.",
+        reward: {
+            icon: '☕️',
+            text: "Aby ti na cestě nechyběla energie. Tvoje oblíbená káva!"
+        }
     },
     { 
         id: 2, 
         title: "Úkol 3: Mikulov, Náměstí",
         coords: [48.8055, 16.6378],
         question: "Když jsme tu stáli, obdivovali jsme krásnou kašnu. Jaká římská bohyně je na jejím vrcholu?",
-        answer: "pomona",
-        clue: "Jsi neuvěřitelná! Poslední úkol na tebe čeká na místě s nejkrásnějším výhledem na celé město. Místo, kde se nebe dotýká země." 
+        options: ["Venuše", "Pomona", "Diana"],
+        answer: "Pomona",
+        clue: "Jsi neuvěřitelná! Poslední úkol na tebe čeká na místě s nejkrásnějším výhledem na celé město. Místo, kde se nebe dotýká země.",
+        reward: {
+            icon: '✨',
+            text: "Malý balíček pro chvíle pohody, které si zasloužíš."
+        }
     },
     { 
         id: 3, 
         title: "Úkol 4: Svatý kopeček, Mikulov",
         coords: [48.8035, 16.6508],
         question: "Rozhlédni se kolem sebe. Tento výhled je stejně nekonečný jako moje láska k tobě. Co je to jedno slovo, které nejlépe vystihuje naši společnou budoucnost?",
-        answer: "navzdy",
+        options: ["Štěstí", "Láska", "Navždy"],
+        answer: "Navždy",
         clue: "Dokázala jsi to! Jsi u konce naší cesty." 
+        // Zde záměrně není odměna, aby se zachovalo překvapení
     }
 ];
 
@@ -59,15 +78,19 @@ const startButton = document.getElementById('start-button');
 const appContainer = document.getElementById('app-container');
 const completionScreen = document.getElementById('completion-screen');
 const progressIndicator = document.getElementById('progress-indicator');
-const modal = document.getElementById('task-modal');
-const modalTitle = document.getElementById('task-title');
-const modalQuestion = document.getElementById('task-question');
-const taskForm = document.getElementById('task-form');
-const answerInput = document.getElementById('task-answer');
-const submitButton = document.getElementById('submit-button');
+const taskModal = document.getElementById('task-modal');
+const taskModalTitle = document.getElementById('task-title');
+const taskModalQuestion = document.getElementById('task-question');
+const answerOptionsContainer = document.getElementById('answer-options');
 const feedbackMessage = document.getElementById('feedback-message');
 const continueButton = document.getElementById('continue-button');
 const closeButton = document.querySelector('.close-button');
+
+// Elementy pro odměny
+const rewardModal = document.getElementById('reward-modal');
+const rewardIconContainer = document.getElementById('reward-icon-container');
+const rewardText = document.getElementById('reward-text');
+const rewardContinueButton = document.getElementById('reward-continue-button');
 
 /**
  * Inicializace Firebase
@@ -81,12 +104,7 @@ function initFirebase() {
         gameStateRef = database.ref('gameState');
     } catch (e) {
         console.error("Firebase initialization error:", e);
-        // Zobrazit uživatelsky přívětivou chybu, pokud konfigurace není kompletní
-        if (firebaseConfig.apiKey === "YOUR_API_KEY") {
-             alert("Chyba: V souboru index.js chybí konfigurace Firebase. Doplňte prosím všechny údaje z vašeho Firebase projektu.");
-        } else {
-             alert("Chyba připojení k databázi. Zkontrolujte prosím konfiguraci a připojení k internetu.");
-        }
+        alert("Chyba připojení k databázi. Zkontrolujte prosím konfiguraci a připojení k internetu.");
     }
 }
 
@@ -152,63 +170,103 @@ function renderTaskMarkers() {
  * Otevře modální okno pro daný úkol
  */
 function openTaskModal(task) {
-    modalTitle.textContent = task.title;
-    modalQuestion.textContent = task.question;
-    answerInput.value = '';
+    taskModalTitle.textContent = task.title;
+    taskModalQuestion.textContent = task.question;
     
+    answerOptionsContainer.innerHTML = '';
     feedbackMessage.classList.add('hidden');
     continueButton.classList.add('hidden');
-    submitButton.classList.remove('hidden');
-    answerInput.disabled = false;
     
-    modal.classList.remove('modal-hidden');
-    answerInput.focus();
+    task.options.forEach(option => {
+        const button = document.createElement('button');
+        button.textContent = option;
+        button.classList.add('option-button');
+        button.onclick = () => handleAnswerSelection(option, task, button);
+        answerOptionsContainer.appendChild(button);
+    });
 
-    taskForm.onsubmit = (e) => handleFormSubmit(e, task);
+    taskModal.classList.remove('modal-hidden');
 }
 
 /**
- * Zavře modální okno
+ * Zavře modální okno úkolu
  */
-function closeModal() {
-    modal.classList.add('modal-hidden');
+function closeTaskModal() {
+    taskModal.classList.add('modal-hidden');
 }
 
 /**
- * Zpracuje odeslání odpovědi
+ * Otevře modální okno s odměnou
  */
-function handleFormSubmit(event, task) {
-    event.preventDefault();
-    const userAnswer = answerInput.value.trim().toLowerCase();
-    
-    if (userAnswer === task.answer.toLowerCase()) {
+function openRewardModal(task) {
+    if (!task.reward) {
+        advanceGameState(task); // Pokud není odměna, rovnou postup
+        return;
+    }
+    rewardIconContainer.innerHTML = task.reward.icon;
+    rewardText.textContent = task.reward.text;
+    rewardModal.classList.remove('modal-hidden');
+
+    rewardContinueButton.onclick = () => {
+        closeRewardModal();
+        advanceGameState(task);
+    };
+}
+
+/**
+ * Zavře modální okno odměny
+ */
+function closeRewardModal() {
+    rewardModal.classList.add('modal-hidden');
+}
+
+/**
+ * Posune hru do dalšího stavu a uloží do DB
+ */
+function advanceGameState(task) {
+    const newIndex = gameState.currentTaskIndex + 1;
+    const newCompletedTasks = { ...gameState.completedTasks, [task.id]: true };
+
+    if (gameStateRef) {
+        gameStateRef.set({
+            currentTaskIndex: newIndex,
+            completedTasks: newCompletedTasks
+        });
+    }
+}
+
+
+/**
+ * Zpracuje výběr odpovědi
+ */
+function handleAnswerSelection(selectedOption, task, buttonElement) {
+    const allOptionButtons = answerOptionsContainer.querySelectorAll('.option-button');
+    allOptionButtons.forEach(btn => btn.disabled = true);
+
+    if (selectedOption.toLowerCase() === task.answer.toLowerCase()) {
+        buttonElement.classList.add('correct');
         feedbackMessage.className = 'success';
         feedbackMessage.innerHTML = `<strong>Správně!</strong><br>${task.clue}`;
         feedbackMessage.classList.remove('hidden');
-
-        answerInput.disabled = true;
-        submitButton.classList.add('hidden');
         continueButton.classList.remove('hidden');
 
-        const newIndex = gameState.currentTaskIndex + 1;
-        const newCompletedTasks = { ...gameState.completedTasks, [task.id]: true };
-
-        // Nastavení akce pro tlačítko Pokračovat
         continueButton.onclick = () => {
-            // Uložení do Firebase až při pokračování
-            if (gameStateRef) {
-                gameStateRef.set({
-                    currentTaskIndex: newIndex,
-                    completedTasks: newCompletedTasks
-                });
-            }
-            closeModal();
+            closeTaskModal();
+            // Po zavření okna s úkolem zobrazíme odměnu (pokud existuje)
+            openRewardModal(task);
         };
 
     } else {
+        buttonElement.classList.add('incorrect');
         feedbackMessage.className = 'error';
         feedbackMessage.textContent = 'To není správná odpověď. Zkus to znovu!';
         feedbackMessage.classList.remove('hidden');
+        
+        setTimeout(() => {
+            buttonElement.classList.remove('incorrect');
+            allOptionButtons.forEach(btn => btn.disabled = false);
+            feedbackMessage.classList.add('hidden');
+        }, 1500);
     }
 }
 
@@ -227,6 +285,8 @@ function startApp() {
                 currentTaskIndex: data.currentTaskIndex || 0,
                 completedTasks: data.completedTasks || {}
             };
+        } else {
+            gameState = { currentTaskIndex: 0, completedTasks: {} };
         }
         updateUI();
         if (map && gameState.currentTaskIndex < TASKS.length) {
@@ -237,9 +297,12 @@ function startApp() {
         alert("Nepodařilo se připojit k našemu příběhu. Zkus to prosím znovu.");
     });
     
-    closeButton.addEventListener('click', closeModal);
+    closeButton.addEventListener('click', closeTaskModal);
     window.addEventListener('click', (event) => {
-        if (event.target === modal) closeModal();
+        if (event.target === taskModal) closeTaskModal();
+        if (event.target === rewardModal) {
+            // Zavření odměny kliknutím mimo neposouvá hru dál, je třeba kliknout na tlačítko
+        }
     });
 }
 
@@ -248,8 +311,6 @@ function startApp() {
  */
 function main() {
     startButton.addEventListener('click', () => {
-        // Inicializujeme Firebase až po kliknutí na start,
-        // aby se nezobrazovaly chybové hlášky předem.
         initFirebase(); 
         welcomeScreen.classList.add('hidden');
         appContainer.classList.remove('hidden');
