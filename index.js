@@ -3,13 +3,12 @@ const { firebase, L } = window;
 
 // --- DŮLEŽITÉ: Vložte sem konfiguraci vašeho Firebase projektu ---
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    databaseURL: "https://<YOUR_PROJECT_ID>.firebaseio.com", 
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCr0mWTp9rYWTfnPEN5ZSWEcWf2kz0g6KU",
+  authDomain: "milacapp-4e209.firebaseapp.com",
+  projectId: "milacapp-4e209",
+  storageBucket: "milacapp-4e209.firebasestorage.app",
+  messagingSenderId: "965183350247",
+  appId: "1:965183350247:web:0078481af23ac2ba780942"
 };
 // --- Konec konfigurace ---
 
