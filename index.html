@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -37,12 +38,18 @@
             <span class="close-button">&times;</span>
             <h2 id="task-title"></h2>
             <p id="task-question"></p>
-            <form id="task-form">
-                <input type="text" id="task-answer" placeholder="Tvá odpověď..." autocomplete="off" required>
-                <button type="submit" id="submit-button">Odeslat odpověď</button>
-            </form>
+            <div id="answer-options"></div>
             <div id="feedback-message" class="hidden"></div>
             <button id="continue-button" class="hidden">Pokračovat</button>
+        </div>
+    </div>
+
+    <div id="reward-modal" class="modal-hidden">
+        <div class="modal-content">
+            <h2 id="reward-title">Odměna pro tebe!</h2>
+            <div id="reward-icon-container"></div>
+            <p id="reward-text"></p>
+            <button id="reward-continue-button">Pokračovat k dalšímu cíli</button>
         </div>
     </div>
 
