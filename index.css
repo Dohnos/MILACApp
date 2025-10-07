@@ -185,10 +185,6 @@ main {
     text-align: center;
 }
 
-#video-modal .modal-content {
-    max-width: 800px;
-}
-
 #task-modal:not(.modal-hidden) .modal-content,
 #reward-modal:not(.modal-hidden) .modal-content,
 #video-modal:not(.modal-hidden) .modal-content {
@@ -216,10 +212,6 @@ main {
     margin-bottom: 0.75rem;
     color: var(--slate-gray);
     text-align: center;
-}
-
-#video-title {
-    margin-bottom: 1.5rem;
 }
 
 #task-question, #reward-text {
@@ -323,6 +315,34 @@ main {
     animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* --- Video Modal --- */
+#video-modal .modal-content p {
+    margin-bottom: 1.5rem;
+}
+
+.action-link {
+    display: inline-block;
+    padding: 0.8rem 2.5rem;
+    background-color: var(--success-color);
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.action-link:hover {
+    background-color: #4cae4c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+#video-continue-button {
+    margin-top: 0;
+}
+
 /* --- Leaflet Custom Pin Marker --- */
 .leaflet-marker-icon {
     border: none;
@@ -354,15 +374,6 @@ main {
 
 .marker-locked::before {
     background-color: var(--locked-color);
-}
-
-/* --- Video Modal --- */
-#final-video {
-    width: 100%;
-    height: auto;
-    max-height: 70vh;
-    border-radius: 10px;
-    background-color: #000;
 }
 
 @keyframes pulse {
