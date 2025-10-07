@@ -1,3 +1,4 @@
+
 :root {
     --bg-color: #fdfcfb;
     --text-color: #3a3a3a;
@@ -145,7 +146,7 @@ main {
 }
 
 /* --- Modal --- */
-#task-modal {
+#task-modal, #reward-modal {
     position: fixed;
     z-index: 2000;
     left: 0;
@@ -163,7 +164,8 @@ main {
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 
-#task-modal:not(.modal-hidden) {
+#task-modal:not(.modal-hidden),
+#reward-modal:not(.modal-hidden) {
     opacity: 1;
     visibility: visible;
 }
@@ -180,9 +182,11 @@ main {
     transform: translateY(20px) scale(0.98);
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 1px solid rgba(255, 255, 255, 0.3);
+    text-align: center;
 }
 
-#task-modal:not(.modal-hidden) .modal-content {
+#task-modal:not(.modal-hidden) .modal-content,
+#reward-modal:not(.modal-hidden) .modal-content {
     transform: translateY(0) scale(1);
 }
 
@@ -201,7 +205,7 @@ main {
     color: var(--text-color);
 }
 
-#task-title {
+#task-title, #reward-title {
     font-family: var(--font-heading);
     font-size: 1.8rem;
     margin-bottom: 0.75rem;
@@ -209,31 +213,61 @@ main {
     text-align: center;
 }
 
-#task-question {
+#task-question, #reward-text {
     font-size: 1.1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     text-align: center;
     color: #34495e;
 }
 
-#task-form input {
+#answer-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.option-button {
     width: 100%;
     padding: 1rem;
+    color: var(--slate-gray);
     border: 1px solid #ccc;
+    background-color: #fff;
     border-radius: 12px;
     font-size: 1rem;
     font-family: var(--font-body);
-    margin-bottom: 1rem;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
 }
 
-#task-form input:focus {
-    outline: none;
+.option-button:not(:disabled):hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+    background-color: #fefcf5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-#submit-button, #continue-button {
+.option-button.correct {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: white;
+    font-weight: bold;
+}
+
+.option-button.incorrect {
+    background-color: var(--error-color);
+    border-color: var(--error-color);
+    color: white;
+    animation: shake 0.5s;
+}
+
+.option-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+#continue-button, #reward-continue-button {
     width: 100%;
     padding: 1rem;
     color: white;
@@ -243,26 +277,16 @@ main {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
-}
-
-#submit-button {
-    background-color: var(--slate-gray);
-}
-#submit-button:hover {
-    background-color: #4a6a6a;
-    transform: translateY(-2px);
-}
-#continue-button {
     background-color: var(--accent-color);
     margin-top: 1rem;
 }
-#continue-button:hover {
+#continue-button:hover, #reward-continue-button:hover {
     background-color: var(--accent-hover);
     transform: translateY(-2px);
 }
 
 #feedback-message {
-    margin-top: 1.2rem;
+    margin-top: 1.5rem;
     padding: 1rem;
     border-radius: 12px;
     text-align: center;
@@ -280,6 +304,14 @@ main {
     background-color: #f9e6e6;
     color: #a94442;
     border: 1px solid #ebccd1;
+}
+
+/* Reward Modal Specifics */
+#reward-icon-container {
+    font-size: 6rem;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 /* --- Leaflet Custom Pin Marker --- */
@@ -330,4 +362,22 @@ main {
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+@keyframes popIn {
+    from {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
 }
