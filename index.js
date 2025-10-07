@@ -1,7 +1,3 @@
-
-// @ts-nocheck
-const { firebase, L } = window;
-
 // --- Kompletní a finální Firebase konfigurace ---
 const firebaseConfig = {
   apiKey: "AIzaSyCr0mWTp9rYWTfnPEN5ZSWEcWf2kz0g6KU",
