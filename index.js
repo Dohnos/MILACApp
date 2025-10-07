@@ -1,10 +1,10 @@
-// @ts-nocheck
-const { firebase, L } = window;
-
 // --- DŮLEŽITÉ: Vložte sem konfiguraci vašeho Firebase projektu ---
+// Najdete ji v nastavení vašeho projektu ve Firebase Console
+// (Project Settings > General > Your apps > SDK setup and configuration)
 const firebaseConfig = {
   apiKey: "AIzaSyCr0mWTp9rYWTfnPEN5ZSWEcWf2kz0g6KU",
   authDomain: "milacapp-4e209.firebaseapp.com",
+  databaseURL: "https://milacapp-4e209-default-rtdb.europe-west1.firebasedatabase.app/",
   projectId: "milacapp-4e209",
   storageBucket: "milacapp-4e209.firebasestorage.app",
   messagingSenderId: "965183350247",
@@ -74,12 +74,19 @@ const closeButton = document.querySelector('.close-button');
  */
 function initFirebase() {
     try {
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         database = firebase.database();
         gameStateRef = database.ref('gameState');
     } catch (e) {
         console.error("Firebase initialization error:", e);
-        alert("Chyba připojení k databázi. Zkontrolujte prosím konfiguraci.");
+        // Zobrazit uživatelsky přívětivou chybu, pokud konfigurace není kompletní
+        if (firebaseConfig.apiKey === "YOUR_API_KEY") {
+             alert("Chyba: V souboru index.js chybí konfigurace Firebase. Doplňte prosím všechny údaje z vašeho Firebase projektu.");
+        } else {
+             alert("Chyba připojení k databázi. Zkontrolujte prosím konfiguraci a připojení k internetu.");
+        }
     }
 }
 
@@ -189,10 +196,12 @@ function handleFormSubmit(event, task) {
         // Nastavení akce pro tlačítko Pokračovat
         continueButton.onclick = () => {
             // Uložení do Firebase až při pokračování
-            gameStateRef.set({
-                currentTaskIndex: newIndex,
-                completedTasks: newCompletedTasks
-            });
+            if (gameStateRef) {
+                gameStateRef.set({
+                    currentTaskIndex: newIndex,
+                    completedTasks: newCompletedTasks
+                });
+            }
             closeModal();
         };
 
@@ -209,6 +218,8 @@ function handleFormSubmit(event, task) {
 function startApp() {
     initMap();
     
+    if (!gameStateRef) return;
+
     gameStateRef.on('value', (snapshot) => {
         const data = snapshot.val();
         if (data) {
@@ -236,8 +247,10 @@ function startApp() {
  * Inicializace celé aplikace
  */
 function main() {
-    initFirebase();
     startButton.addEventListener('click', () => {
+        // Inicializujeme Firebase až po kliknutí na start,
+        // aby se nezobrazovaly chybové hlášky předem.
+        initFirebase(); 
         welcomeScreen.classList.add('hidden');
         appContainer.classList.remove('hidden');
         startApp();
