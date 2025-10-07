@@ -60,7 +60,7 @@ const TASKS = [
         answer: "Navždy",
         clue: "Dokázala jsi to! Jsi u konce naší cesty.",
         // Zde záměrně není odměna, aby se zachovalo překvapení
-        videoUrl: "SEM_VLOZ_URL_ADRESU_VIDEA" // <-- ZDE VLOŽTE ODKAZ NA VIDEO
+        videoUrl: "https://www.icloud.com/photos/#/icloudlinks/08aaOxKp-D6ED8bAI5pboYOXw/0/" // <-- ZDE VLOŽTE ODKAZ NA VIDEO
     }
 ];
 
@@ -90,8 +90,9 @@ const rewardText = document.getElementById('reward-text');
 const rewardContinueButton = document.getElementById('reward-continue-button');
 
 // Elementy pro video
-const videoOverlay = document.getElementById('video-overlay');
+const videoModal = document.getElementById('video-modal');
 const finalVideo = document.getElementById('final-video');
+const videoContinueButton = document.getElementById('video-continue-button');
 
 /**
  * Inicializace Firebase
@@ -132,7 +133,7 @@ function showCompletionScreen() {
  */
 function updateUI() {
     if (gameState.currentTaskIndex >= TASKS.length) {
-        // Logika pro zobrazení finální obrazovky je nyní v advanceGameState
+        showCompletionScreen();
         return;
     }
     progressIndicator.textContent = `Úkol ${gameState.currentTaskIndex + 1} z ${TASKS.length}`;
@@ -222,19 +223,33 @@ function closeRewardModal() {
 }
 
 /**
- * Spustí přehrávání finálního videa
+ * Spustí přehrávání finálního videa v modálním okně
  */
-function playFinalVideo(url) {
-    appContainer.classList.add('hidden');
-    videoOverlay.classList.remove('hidden');
+function openVideoModal(url) {
+    videoModal.classList.remove('modal-hidden');
+    videoContinueButton.classList.add('hidden');
     finalVideo.src = url;
     finalVideo.play().catch(e => console.error("Chyba při přehrávání videa:", e));
 
     finalVideo.onended = () => {
-        videoOverlay.classList.add('hidden');
+        videoContinueButton.classList.remove('hidden');
+    };
+    
+    videoContinueButton.onclick = () => {
+        closeVideoModal();
         showCompletionScreen();
     };
 }
+
+/**
+ * Zavře modální okno s videem
+ */
+function closeVideoModal() {
+    finalVideo.pause();
+    finalVideo.src = ""; // Uvolní zdroje
+    videoModal.classList.add('modal-hidden');
+}
+
 
 /**
  * Posune hru do dalšího stavu a uloží do DB
@@ -243,10 +258,9 @@ function advanceGameState(task) {
     const isFinalTask = task.id === TASKS.length - 1;
 
     // Pokud je to poslední úkol a má video, přehraj ho
-    if (isFinalTask && task.videoUrl && task.videoUrl !== "https://share.icloud.com/photos/08aaOxKp-D6ED8bAI5pboYOXw") {
-        playFinalVideo(task.videoUrl);
-        // Neukládáme stav, aby se po obnovení stránky nespustil konec, ale video
-        return;
+    if (isFinalTask && task.videoUrl && task.videoUrl !== "SEM_VLOZ_URL_ADRESU_VIDEA") {
+        openVideoModal(task.videoUrl);
+        return; // Zastavíme další postup, čekáme na dokončení videa
     }
     
     const newIndex = gameState.currentTaskIndex + 1;
