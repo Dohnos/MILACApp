@@ -55,9 +55,9 @@ const TASKS = [
         id: 3, 
         title: "Úkol 4: Svatý kopeček, Mikulov",
         coords: [48.8035, 16.6508],
-        question: "Rozhlédni se kolem sebe. Co je to jedno slovo, které nejlépe vystihuje naši společnou budoucnost?",
-        options: ["Štěstí", "Láska", "Navždy"],
-        answer: "Navždy",
+        question: "Rozhlédni se kolem sebe. Co jsou dvě slova, která nejlépe vystihuje naši společnou budoucnost?",
+        options: ["Majetek a věci", "Cestování a zážitky", "Láska a navždy"],
+        answer: "Láska a navždy",
         clue: "Dokázala jsi to! Jsi moje šikula. Mrkni na videjko a vrať se zpět.",
         // Zde záměrně není odměna, aby se zachovalo překvapení
         videoUrl: "https://www.icloud.com/photos/#/icloudlinks/08aaOxKp-D6ED8bAI5pboYOXw/0/" // <-- ZDE VLOŽTE ODKAZ NA VIDEO
