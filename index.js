@@ -16,10 +16,10 @@ const TASKS = [
         id: 0, 
         title: "Úkol 1: Olomouc",
         coords: [49.5942, 17.2510],
-        question: "Pamatuješ si, jak se jmenovala kavárna, kde jsme si dali první kávu na jednom z našich prvních rande tady v Olomouci?",
-        options: ["Kafe a Láska", "Cafe La Fée", "Long Story Short"],
-        answer: "Cafe La Fée",
-        clue: "Správně, lásko! Další cíl je místo, kde jsme si užili náš první společný wellness. Leží kousek za hranicemi.",
+        question: "Zítra nás čeká společných 8 let. Neuvěřitelné. Kolik dní to je, co jsme spolu?",
+        options: ["2 920 dní", "3 920 dní", "3 500 dní"],
+        answer: "2 920 dní",
+        clue: "Správně, lásko! Další cíl je místo, kde jsme si užili náš společný wellness již několikrát. Leží kousek za hranicemi.",
         reward: {
             icon: '💐',
             text: "Jako malá pozornost za tvou skvělou paměť. Krásná květina pro krásnou ženu."
@@ -29,22 +29,22 @@ const TASKS = [
         id: 1, 
         title: "Úkol 2: Laa an der Thaya",
         coords: [48.7183, 16.3916],
-        question: "V tichém bazénu jsme tehdy relaxovali celé hodiny. Jak se ten bazén jmenuje?",
-        options: ["Relaxarium", "Aquadrom", "Silentium"],
-        answer: "Silentium",
+        question: "Kde jsme byli na první naši společné dovolené?",
+        options: ["Egypt - Hurghada", "Dánsko - Copenhagen", "Polsko - Opole"],
+        answer: "Egypt - Hurghada",
         clue: "Přesně tak! Bylo to magické. Nyní se vydejme do srdce Pálavy, do města, kterému se přezdívá perla jižní Moravy.",
         reward: {
             icon: '☕️',
-            text: "Aby ti na cestě nechyběla energie. Tvoje oblíbená káva!"
+            text: "Tvoje milovaná káva na kterou nedáš dopustit!"
         }
     },
     { 
         id: 2, 
         title: "Úkol 3: Mikulov, Náměstí",
         coords: [48.8055, 16.6378],
-        question: "Když jsme tu stáli, obdivovali jsme krásnou kašnu. Jaká římská bohyně je na jejím vrcholu?",
-        options: ["Venuše", "Pomona", "Diana"],
-        answer: "Pomona",
+        question: "Kdy jsme si jeli pro našeho mazlíčka, hafana Ebiska?",
+        options: ["5. Srpna 2022", "10. Července 2022", "10. Srpna 2022"],
+        answer: "10. Srpna 2022",
         clue: "Jsi neuvěřitelná! Poslední úkol na tebe čeká na místě s nejkrásnějším výhledem na celé město. Místo, kde se nebe dotýká země.",
         reward: {
             icon: '✨',
@@ -55,10 +55,10 @@ const TASKS = [
         id: 3, 
         title: "Úkol 4: Svatý kopeček, Mikulov",
         coords: [48.8035, 16.6508],
-        question: "Rozhlédni se kolem sebe. Tento výhled je stejně nekonečný jako moje láska k tobě. Co je to jedno slovo, které nejlépe vystihuje naši společnou budoucnost?",
+        question: "Rozhlédni se kolem sebe. Co je to jedno slovo, které nejlépe vystihuje naši společnou budoucnost?",
         options: ["Štěstí", "Láska", "Navždy"],
         answer: "Navždy",
-        clue: "Dokázala jsi to! Jsi u konce naší cesty.",
+        clue: "Dokázala jsi to! Jsi moje šikula. Mrkni na videjko a vrať se zpět.",
         // Zde záměrně není odměna, aby se zachovalo překvapení
         videoUrl: "https://www.icloud.com/photos/#/icloudlinks/08aaOxKp-D6ED8bAI5pboYOXw/0/" // <-- ZDE VLOŽTE ODKAZ NA VIDEO
     }
