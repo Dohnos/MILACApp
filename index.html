@@ -60,11 +60,13 @@
         </div>
     </div>
 
-    <div id="video-overlay" class="hidden">
-        <div id="video-player-container">
-            <video id="final-video" playsinline>
+    <div id="video-modal" class="modal-hidden">
+        <div class="modal-content">
+             <h2 id="video-title">Poslední kousek skládačky...</h2>
+             <video id="final-video" playsinline controls>
                 <!-- Zdroj videa bude nastaven přes JavaScript -->
-            </video>
+             </video>
+             <button id="video-continue-button" class="hidden">Dokončit dobrodružství</button>
         </div>
     </div>
     
